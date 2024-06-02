@@ -1,0 +1,16 @@
+.authContainer{
+    background-color: #FEAF00;
+    
+}
+.title{
+    position: relative;
+}
+.title::before{
+    width: 7px;
+    height: 30px;
+    background-color: #FEAF00;
+    position: absolute;
+    right:102% ;
+    top: 0;
+    content: "";
+}
