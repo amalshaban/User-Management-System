@@ -1,9 +1,11 @@
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+
 export default function UsersList() {
   let navigate = useNavigate();
   let [userId, setUserId ]= useState(0);
@@ -37,8 +39,9 @@ export default function UsersList() {
 navigate('/home/UserData/false');
   };
   
-  const navigateUpdateUserData =()=>{
-    navigate('/home/UserData/true');
+
+  const navigateUpdateUserData =(user:any)=>{ 
+      navigate('/home/UserData/true', { state: user});
       };
 
 
@@ -92,7 +95,7 @@ navigate('/home/UserData/false');
      <td>{user.phone}</td>
      <td>{user.age}</td>
      <td>
-      <i onClick={navigateUpdateUserData} className='fa fa-edit text-warning mx-2' arie-hidden='true'></i>
+      <i onClick={() => navigateUpdateUserData({user})} className='fa fa-edit text-warning mx-2' arie-hidden='true'></i>
       <i onClick={()=>handleShow(user)} className='fa fa-trash text-warning mx-2' arie-hidden='true'></i>
      </td>
    </tr>
