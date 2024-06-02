@@ -31,9 +31,18 @@ export default function UsersList() {
   useEffect(() => {
     getUsersList();
   }, []);
-  const navigateUserData =()=>{
-navigate('/home/UserData')
-  }
+
+
+  const navigateAddUserData =()=>{
+navigate('/home/UserData/false');
+  };
+  
+  const navigateUpdateUserData =()=>{
+    navigate('/home/UserData/true');
+      };
+
+
+      
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -60,7 +69,7 @@ navigate('/home/UserData')
 
     <div className='title d-flex justify-content-between p-4'>
       <h4>Users List</h4>
-      <button onClick={navigateUserData} className='btn btn-warning'>Add New User</button>  
+      <button onClick={navigateAddUserData} className='btn btn-warning'>Add New User</button>  
     </div>
     <table className="table">
   <thead>
@@ -74,19 +83,21 @@ navigate('/home/UserData')
     </tr>
   </thead>
   <tbody>
-   {usersList.length>0? usersList.map((user: any)=>
-     <tr key={user.id}>
+   {
+    usersList.map((user: any)=>(
+    <tr key={user.id}>
      <th scope="row">{user.id}</th>
      <td>{user.firstName +' '+ user.lastName}</td>
      <td>{user.email}</td>
      <td>{user.phone}</td>
      <td>{user.age}</td>
      <td>
-      <i className='fa fa-edit text-warning mx-2' arie-hidden='true'></i>
+      <i onClick={navigateUpdateUserData} className='fa fa-edit text-warning mx-2' arie-hidden='true'></i>
       <i onClick={()=>handleShow(user)} className='fa fa-trash text-warning mx-2' arie-hidden='true'></i>
      </td>
    </tr>
-  ):<h3>No Data</h3>}
+  ))
+}
   </tbody>
 
 </table>

@@ -33,6 +33,7 @@ function App() {
         {path:'UsersList', element:<UsersList/>},
         {path:'UserData', element:<UserData/>},
 
+        {path: 'UserData/:isEdit', element: <UserData/>},
         {path:'Profile', element:<Profile/>},
       ]
     }

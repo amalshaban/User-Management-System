@@ -1,9 +1,10 @@
-
-import { Sidebar, Menu, MenuItem } from 'react-pro-sidebar';
-import pf from 'E:/react course/User Management System/user/src/assets/imgs/9c5672219055d43b0ffb2caf907f4b0d.jpg'
+import { useContext, useState } from 'react';
+import { Menu, MenuItem, Sidebar } from 'react-pro-sidebar';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { AuthContext } from '../../../context/AuthContext';
 export default function SideBar() {
+  
+let { userData} = useContext(AuthContext);
   const [ isCollapsed , setIsCollapsed ] =useState(false);
   const toggleCollapse = () =>{
     setIsCollapsed(! isCollapsed);
@@ -18,8 +19,8 @@ onClick={toggleCollapse}
     
       </MenuItem>
       <div className='profileData m-5'>
-        <img src= {pf} className=' rounded rounded-circle w-100'></img>
-        <h1 className='h6 text-center p-2'>User Name</h1>      
+        <img src= {userData?.image} className=' rounded rounded-circle w-100'></img>
+        <h1 className='h6 text-center p-2'>{userData?.firstName} {userData?.lastName}</h1>      
       </div>
       <MenuItem 
       className='hovercolor'
