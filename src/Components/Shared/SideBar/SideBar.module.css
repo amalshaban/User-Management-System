@@ -1,0 +1,10 @@
+Menu .ps-menu-button:hover{
+background-color: #FEAF00 !important;  
+}
+.sidebarcontainer{
+    background: #F2EAE1;
+    height: 100vh !important;
+}
+.sidebarcontainer .css-1t8x7v1 >.ps-menu-button:hover{
+    background-color: #FEAF00 !important;
+}
