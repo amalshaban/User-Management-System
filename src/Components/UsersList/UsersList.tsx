@@ -7,7 +7,9 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 export default function UsersList() {
-  let navigate = useNavigate();
+  let navigateAdd = useNavigate();
+  let navigateUpdate = useNavigate();
+
   let [userId, setUserId ]= useState(0);
   let [userName, setUserName ]= useState("");
   const deleteUser = async()=>{
@@ -36,12 +38,12 @@ export default function UsersList() {
 
 
   const navigateAddUserData =()=>{
-navigate('/home/UserData/false');
+navigateAdd('/home/UserData/false');
   };
   
 
   const navigateUpdateUserData =(user:any)=>{ 
-      navigate('/home/UserData/true', { state: user});
+      navigateUpdate('/home/UserData/true', { state: user});
       };
 
 

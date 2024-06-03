@@ -14,7 +14,8 @@ export default function UserData() {
   console.log(isEdit);
   
   let location = useLocation();
-let userToUpdate = location.state.user;
+let userToUpdate = location?.state?.user;
+
 
 
 
@@ -47,7 +48,7 @@ let userToUpdate = location.state.user;
           bd: userToUpdate.birthDate,
         });
       }
-      else if(isEdit === 'false') {
+      else if(isEdit === 'false' && userToUpdate===null) {
       apiResponse = responseAdd;
         setTitle('Add User');
        setFormData({
@@ -61,6 +62,7 @@ let userToUpdate = location.state.user;
           bd: '',
         });
     }}, [isEdit, formData]);
+    
   };
  
  handleUser({isEdit, userToUpdate});
