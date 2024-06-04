@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form"
-import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
@@ -17,6 +16,7 @@ export default function UserData() {
 let userToUpdate = location?.state?.user;
 
 
+console.log(userToUpdate.id);
 
 
   
@@ -29,15 +29,24 @@ let userToUpdate = location?.state?.user;
     bd: '',
   });
   let [title, setTitle] = useState('Add User');
-  let responseUpdate= `await axios.put("https://dummyjson.com/users/1", data)`;
+  let responseUpdate= `await axios.put("https://dummyjson.com/users/${userToUpdate.id}", data)`;
   let responseAdd = `await axios.post("https://dummyjson.com/users/add", data)`;
   let apiResponse="";
+  let updateMessage = "User updated Successfuly !";
+  let addMessage = "User Added Successfuly !";
+  let updateErrorMessage = "Sorry,  User was not updated !"
+  let addErrorMessage = "Sorry,  User was not Added !"
+
+  let seccessMessage = '';
+  let failurMessage = '';
    function handleUser  ({ isEdit, userToUpdate  }) {
 
     useEffect(() => {
       if (isEdit === 'true' && userToUpdate) { 
         apiResponse = responseUpdate;
         setTitle('Update User'), 
+         seccessMessage = updateMessage,
+         failurMessage = updateErrorMessage,
         setFormData({
           ...formData,
           fn: userToUpdate.firstName,
@@ -51,6 +60,8 @@ let userToUpdate = location?.state?.user;
       else if(isEdit === 'false' && userToUpdate===null) {
       apiResponse = responseAdd;
         setTitle('Add User');
+        seccessMessage = addMessage,
+        failurMessage = addErrorMessage,
        setFormData({
         ...formData,
 
@@ -61,28 +72,40 @@ let userToUpdate = location?.state?.user;
           ph: '',
           bd: '',
         });
-    }}, [isEdit, formData]);
+    }}, [ formData]);
+    
     
   };
  
  handleUser({isEdit, userToUpdate});
-
-
   let navigate = useNavigate();
   let {
     register,
     handleSubmit,
     formState:{errors},
   } =useForm();
+
  let onSubmit =async(data)=>{
 try {
   let response = apiResponse;
   console.log(response);
-  toast.success("User Added Successfuly !");
+  toast.success(seccessMessage), {
+    position: "top-right",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+
+
+  };
+  
   navigate('/home/UsersList');
 } catch (error) {
   console.log(error);
-  toast.error("User Not Added !");
+  toast.error(failurMessage);
 }
  }
  
@@ -99,7 +122,7 @@ try {
                 <label className='mb-2'>First Name</label>
                 <input
                 type="text" className="form-control" placeholder="Enter your First Name" 
-                aria-label="firstname" aria-describedby="addon-wrapping" value={formData?.fn}
+                aria-label="firstname" aria-describedby="addon-wrapping" defaultValue ={formData?.fn}
                 {...register('firstName',{required:'First Name Is Required !'})}
                 />
               </div>
@@ -114,7 +137,7 @@ try {
                 <label className='mb-2'>Last Name</label>
                 <input
                 type="text" className="form-control" placeholder="Enter your Last Name" 
-                aria-label="lastname" aria-describedby="addon-wrapping" value={formData?.ln}
+                aria-label="lastname" aria-describedby="addon-wrapping" defaultValue={formData?.ln}
                 {...register('lastName',{required:'Last Name Is Required !'})}
                 />
               </div>
@@ -131,7 +154,7 @@ try {
                 <label className='mb-2'>Email</label>
                 <input
                 type="email" className="form-control" placeholder="Enter your Email" 
-                aria-label="email" aria-describedby="addon-wrapping" value={formData?.ei}
+                aria-label="email" aria-describedby="addon-wrapping" defaultValue={formData?.ei}
                 {...register('email',{required:'Email Is Required !'})}
                 />
               </div>
@@ -146,7 +169,7 @@ try {
                 <label className='mb-2'>Age</label>
                 <input
                 type="number" className="form-control" placeholder="Enter your Age" 
-                aria-label="age" aria-describedby="addon-wrapping" value={formData?.a}
+                aria-label="age" aria-describedby="addon-wrapping" defaultValue={formData?.a}
                 {...register('age',{required:'Age Is Required !'})}
                 />
               </div>
@@ -163,7 +186,7 @@ try {
                 <label className='mb-2'>Phone Number</label>
                 <input
                 type="number" className="form-control" placeholder="Enter your Phone Number" 
-                aria-label="phonenumber" aria-describedby="addon-wrapping" value={formData?.ph}
+                aria-label="phonenumber" aria-describedby="addon-wrapping" defaultValue={formData?.ph}
                 {...register('phoneNumber',{required:'Phone Number Is Required !'})}
                 />
               </div>
@@ -178,7 +201,7 @@ try {
                 <label className='mb-2'>Birth Date</label>
                 <input
                 type="date" className="form-control" placeholder="Enter your Birth Date" 
-                aria-label="birthdate" aria-describedby="addon-wrapping" value={formData?.bd}
+                aria-label="birthdate" aria-describedby="addon-wrapping" defaultValue={formData?.bd}
                 {...register('birthDate',{required:'Birth Date Is Required !'})}
                 />
               </div>

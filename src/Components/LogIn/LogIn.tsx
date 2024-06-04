@@ -18,7 +18,6 @@ let { saveUserData , userData} = useContext(AuthContext);
   }= useForm();
 
   const onSubmit = async(data:any) => {
-    console.log(data);
     try {
       let response = await axios.post('https://dummyjson.com/auth/login', data);
       localStorage.setItem('userToken', response.data.token);
