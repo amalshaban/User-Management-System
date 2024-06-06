@@ -7,8 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 export default function UsersList() {
-  let navigateAdd = useNavigate();
-  let navigateUpdate = useNavigate();
+  let navigate = useNavigate();
+  
 
   let [userId, setUserId ]= useState(0);
   let [userName, setUserName ]= useState("");
@@ -37,14 +37,15 @@ export default function UsersList() {
   }, []);
 
 
-  const navigateAddUserData =()=>{
-navigateAdd('/home/UserData/false');
-  };
-  
 
-  const navigateUpdateUserData =(user:any)=>{ 
-      navigateUpdate('/home/UserData/true', { state: user});
-      };
+    const navigateAddUserData=()=>{
+
+      navigate('/home/UserData');
+    }
+
+  // const navigateUpdateUserData =(user:any)=>{ 
+  //     navigateUpdate('/home/UserData/true', { state: user});
+  //     };
 
 
       
@@ -97,7 +98,7 @@ navigateAdd('/home/UserData/false');
      <td>{user.phone}</td>
      <td>{user.age}</td>
      <td>
-      <i onClick={() => navigateUpdateUserData({user})} className='fa fa-edit text-warning mx-2' arie-hidden='true'></i>
+      <i className='fa fa-edit text-warning mx-2' arie-hidden='true'></i>
       <i onClick={()=>handleShow(user)} className='fa fa-trash text-warning mx-2' arie-hidden='true'></i>
      </td>
    </tr>

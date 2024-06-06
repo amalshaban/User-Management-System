@@ -1,118 +1,135 @@
-import { useForm } from "react-hook-form"
+import axios from "axios";
+import { useContext } from 'react';
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useNavigate, useParams } from "react-router-dom";
-import { useLocation } from "react-router-dom";
-import {useState, useEffect} from 'react'
-
-
-
+import 'react-toastify/dist/ReactToastify.css'; // Import styles first
+import { AuthContext } from "../../context/AuthContext";
 
 
 export default function UserData() {
-  let{ isEdit }= useParams();
-  console.log(isEdit);
+  // let{ isEdit }= useParams();
+  // console.log(isEdit);
   
-  let location = useLocation();
-let userToUpdate = location?.state?.user;
-
-
-console.log(userToUpdate.id);
-
-
   
-  const [formData, setFormData] = useState({
-    fn: '',
-    ln: '',
-    ei: '',
-    a: '',
-    ph: '',
-    bd: '',
-  });
-  let [title, setTitle] = useState('Add User');
-  let responseUpdate= `await axios.put("https://dummyjson.com/users/${userToUpdate.id}", data)`;
-  let responseAdd = `await axios.post("https://dummyjson.com/users/add", data)`;
-  let apiResponse="";
-  let updateMessage = "User updated Successfuly !";
-  let addMessage = "User Added Successfuly !";
-  let updateErrorMessage = "Sorry,  User was not updated !"
-  let addErrorMessage = "Sorry,  User was not Added !"
+// let location = useLocation();
+// let userToUpdate = location?.state?.user;
+// console.log(userToUpdate.id);
 
-  let seccessMessage = '';
-  let failurMessage = '';
-   function handleUser  ({ isEdit, userToUpdate  }) {
+//   const [formData, setFormData] = useState({
+//     fn: '',
+//     ln: '',
+//     ei: '',
+//     a: '',
+//     ph: '',
+//     bd: '',
+//   });
 
-    useEffect(() => {
-      if (isEdit === 'true' && userToUpdate) { 
-        apiResponse = responseUpdate;
-        setTitle('Update User'), 
-         seccessMessage = updateMessage,
-         failurMessage = updateErrorMessage,
-        setFormData({
-          ...formData,
-          fn: userToUpdate.firstName,
-          ln: userToUpdate.lastName,
-          ei: userToUpdate.email,
-          a: userToUpdate.age,
-          ph: userToUpdate.phone,
-          bd: userToUpdate.birthDate,
-        });
-      }
-      else if(isEdit === 'false' && userToUpdate===null) {
-      apiResponse = responseAdd;
-        setTitle('Add User');
-        seccessMessage = addMessage,
-        failurMessage = addErrorMessage,
-       setFormData({
-        ...formData,
 
-          fn: '',
-          ln: '',
-          ei: '',
-          a: '',
-          ph: '',
-          bd: '',
-        });
-    }}, [ formData]);
-    
-    
-  };
- 
- handleUser({isEdit, userToUpdate});
+
+  // let [title, setTitle] = useState('Add User');
+let { userData } = useContext(AuthContext);
+console.log(userData);
+
   let navigate = useNavigate();
+
   let {
     register,
     handleSubmit,
     formState:{errors},
   } =useForm();
 
- let onSubmit =async(data)=>{
-try {
-  let response = apiResponse;
-  console.log(response);
-  toast.success(seccessMessage), {
-    position: "top-right",
-    autoClose: 2000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
+  let onSubmit =async(data:any)=>{
+    console.log(data);
+    try {
+          const response = await axios.post('https://dummyjson.com/users/add', data);
+          console.log(response);
+          toast("Congratulations , User Added Successfully !", {
+            type: "success", position: "top-right", autoClose: 2000
+          });
+      
+          }
+       
+        catch (error) {
+          console.log(error);
+          toast.error("Sorry, User Not Added !");
+        }
+  }
+  // let onSubmitForAdd =async(data)=>{
+  //   try {
+  //     const response = await axios.post("https://dummyjson.com/users/add", data);
+  //     console.log(response);
+  //     toast.success("Congratulations , User Added Successfully !"), {
+  //       position: "top-right",
+  //       autoClose: 2000,
+  //     };
+      
+  //     navigate('/home/UsersList');
+  //   } 
+  //   catch (error) {
+  //     console.log(error);
+  //     toast.error("Sorry, User Not Added !");
+  //   }
+  //    }
+    //  let onSubmitForUpdate =async(event)=>{
+    //   event.preventDefault();
 
+    //   try {
+    //     const response = await axios.put(`https://dummyjson.com/users/${userToUpdate?.id}`, data)
+    //     console.log(response);
+    //     toast.success("Congratulations , User Updated Successfully !"), {
+    //       position: "top-right",
+    //       autoClose: 2000,
+    //     };
+        
+    //     navigate('/home/UsersList');
+    //   }
+    //    catch (error) {
+    //     console.log(error);
+    //     toast.error("Sorry, User Not Updated !");
+    //   }
+    //    }
+//    function handleUser  ({ isEdit, userToUpdate  }) {
 
-  };
-  
-  navigate('/home/UsersList');
-} catch (error) {
-  console.log(error);
-  toast.error(failurMessage);
-}
- }
+//     useEffect(() => {
+//       if (isEdit === 'true' && userToUpdate) { 
+//         setTitle('Update User');
+
+//         setFormData({
+//           ...formData,
+//           fn: userToUpdate.firstName,
+//           ln: userToUpdate.lastName,
+//           ei: userToUpdate.email,
+//           a: userToUpdate.age,
+//           ph: userToUpdate.phone,
+//           bd: userToUpdate.birthDate,
+//         });
+//       }
+//       else if(isEdit === 'false' && userToUpdate===null) {
+      
+//         setTitle('Add User');
+      
+//        setFormData({
+//         ...formData,
+
+//           fn: userToUpdate.target.defaultValue,
+//           ln: '',
+//           ei: '',
+//           a: '',
+//           ph: '',
+//           bd: '',
+//         });
+//     }}, [ formData]);
+    
+    
+//   };
+ 
+//  handleUser({isEdit, userToUpdate});
  
   return (
     <div className='userContainer'>
       <div className='title p-3 shadow'>
-          <h3>{title}</h3>  
+          <h3>Add User</h3>  
       </div>  
       <div className='formContainer'>
         <form onSubmit={handleSubmit(onSubmit)} className='p-5'>
@@ -122,7 +139,7 @@ try {
                 <label className='mb-2'>First Name</label>
                 <input
                 type="text" className="form-control" placeholder="Enter your First Name" 
-                aria-label="firstname" aria-describedby="addon-wrapping" defaultValue ={formData?.fn}
+                aria-label="firstname" aria-describedby="addon-wrapping" 
                 {...register('firstName',{required:'First Name Is Required !'})}
                 />
               </div>
@@ -137,7 +154,7 @@ try {
                 <label className='mb-2'>Last Name</label>
                 <input
                 type="text" className="form-control" placeholder="Enter your Last Name" 
-                aria-label="lastname" aria-describedby="addon-wrapping" defaultValue={formData?.ln}
+                aria-label="lastname" aria-describedby="addon-wrapping" 
                 {...register('lastName',{required:'Last Name Is Required !'})}
                 />
               </div>
@@ -154,7 +171,7 @@ try {
                 <label className='mb-2'>Email</label>
                 <input
                 type="email" className="form-control" placeholder="Enter your Email" 
-                aria-label="email" aria-describedby="addon-wrapping" defaultValue={formData?.ei}
+                aria-label="email" aria-describedby="addon-wrapping" 
                 {...register('email',{required:'Email Is Required !'})}
                 />
               </div>
@@ -169,7 +186,7 @@ try {
                 <label className='mb-2'>Age</label>
                 <input
                 type="number" className="form-control" placeholder="Enter your Age" 
-                aria-label="age" aria-describedby="addon-wrapping" defaultValue={formData?.a}
+                aria-label="age" aria-describedby="addon-wrapping"
                 {...register('age',{required:'Age Is Required !'})}
                 />
               </div>
@@ -186,7 +203,7 @@ try {
                 <label className='mb-2'>Phone Number</label>
                 <input
                 type="number" className="form-control" placeholder="Enter your Phone Number" 
-                aria-label="phonenumber" aria-describedby="addon-wrapping" defaultValue={formData?.ph}
+                aria-label="phonenumber" aria-describedby="addon-wrapping" 
                 {...register('phoneNumber',{required:'Phone Number Is Required !'})}
                 />
               </div>
@@ -201,7 +218,7 @@ try {
                 <label className='mb-2'>Birth Date</label>
                 <input
                 type="date" className="form-control" placeholder="Enter your Birth Date" 
-                aria-label="birthdate" aria-describedby="addon-wrapping" defaultValue={formData?.bd}
+                aria-label="birthdate" aria-describedby="addon-wrapping" 
                 {...register('birthDate',{required:'Birth Date Is Required !'})}
                 />
               </div>
@@ -213,7 +230,9 @@ try {
             </div>
           </div>
           <div className="text-center my-5">
-          <button className="w-50 btn btn-warning">Save</button>
+          <button onSubmit={handleSubmit(onSubmit)}  className="w-50 btn btn-warning">Add User</button>
+          
+
           </div>
         </form>
       </div>  
