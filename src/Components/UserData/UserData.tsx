@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+<<<<<<< HEAD
 import 'react-toastify/dist/ReactToastify.css'; // Import styles first
 import { AuthContext } from "../../context/AuthContext";
 
@@ -15,6 +16,71 @@ export default function UserData() {
 // let location = useLocation();
 // let userToUpdate = location?.state?.user;
 // console.log(userToUpdate.id);
+=======
+import { useNavigate, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import {useState, useEffect} from 'react'
+
+
+
+
+
+export default function UserData() {
+  let{ isEdit }= useParams();
+  console.log(isEdit);
+  
+  let location = useLocation();
+let userToUpdate = location.state.user;
+
+
+
+  
+  const [formData, setFormData] = useState({
+    fn: '',
+    ln: '',
+    ei: '',
+    a: '',
+    ph: '',
+    bd: '',
+  });
+  let [title, setTitle] = useState('Add User');
+  let responseUpdate= `await axios.put("https://dummyjson.com/users/1", data)`;
+  let responseAdd = `await axios.post("https://dummyjson.com/users/add", data)`;
+  let apiResponse="";
+   function handleUser  ({ isEdit, userToUpdate  }) {
+
+    useEffect(() => {
+      if (isEdit === 'true' && userToUpdate) { 
+        apiResponse = responseUpdate;
+        setTitle('Update User'), 
+        setFormData({
+          ...formData,
+          fn: userToUpdate.firstName,
+          ln: userToUpdate.lastName,
+          ei: userToUpdate.email,
+          a: userToUpdate.age,
+          ph: userToUpdate.phone,
+          bd: userToUpdate.birthDate,
+        });
+      }
+      else if(isEdit === 'false') {
+      apiResponse = responseAdd;
+        setTitle('Add User');
+       setFormData({
+        ...formData,
+
+          fn: '',
+          ln: '',
+          ei: '',
+          a: '',
+          ph: '',
+          bd: '',
+        });
+    }}, [isEdit, formData]);
+  };
+ 
+ handleUser({isEdit, userToUpdate});
+>>>>>>> 33fa73901c6a2f1fdcd294230a24411f712cfec1
 
 //   const [formData, setFormData] = useState({
 //     fn: '',
@@ -38,6 +104,7 @@ console.log(userData);
     handleSubmit,
     formState:{errors},
   } =useForm();
+<<<<<<< HEAD
 
   let onSubmit =async(data:any)=>{
     console.log(data);
@@ -125,11 +192,24 @@ console.log(userData);
 //   };
  
 //  handleUser({isEdit, userToUpdate});
+=======
+ let onSubmit =async(data)=>{
+try {
+  let response = apiResponse;
+  console.log(response);
+  toast.success("User Added Successfuly !");
+  navigate('/home/UsersList');
+} catch (error) {
+  console.log(error);
+  toast.error("User Not Added !");
+}
+ }
+>>>>>>> 33fa73901c6a2f1fdcd294230a24411f712cfec1
  
   return (
     <div className='userContainer'>
       <div className='title p-3 shadow'>
-          <h3>Add User</h3>  
+          <h3>{title}</h3>  
       </div>  
       <div className='formContainer'>
         <form onSubmit={handleSubmit(onSubmit)} className='p-5'>

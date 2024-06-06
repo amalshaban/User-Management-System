@@ -37,15 +37,13 @@ export default function UsersList() {
   }, []);
 
 
-
-    const navigateAddUserData=()=>{
-
-      navigate('/home/UserData');
-    }
-
-  // const navigateUpdateUserData =(user:any)=>{ 
-  //     navigateUpdate('/home/UserData/true', { state: user});
-  //     };
+  const navigateAddUserData =()=>{
+navigate('/home/UserData/false');
+  };
+  
+  const navigateUpdateUserData =()=>{
+    navigate('/home/UserData/true');
+      };
 
 
       
@@ -98,7 +96,7 @@ export default function UsersList() {
      <td>{user.phone}</td>
      <td>{user.age}</td>
      <td>
-      <i className='fa fa-edit text-warning mx-2' arie-hidden='true'></i>
+      <i onClick={navigateUpdateUserData} className='fa fa-edit text-warning mx-2' arie-hidden='true'></i>
       <i onClick={()=>handleShow(user)} className='fa fa-trash text-warning mx-2' arie-hidden='true'></i>
      </td>
    </tr>
